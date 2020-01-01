@@ -80,7 +80,9 @@
       </tfoot>
    </table>
 
+   {{tableData}}
    <hr />
+
    <!-- :onClick="sampleFunction" -->
    <av-table @clickedMe="sampleFunction" @focusedMe="hoverFunction">
       <template #caption>
@@ -91,6 +93,7 @@
       <template #colgroup>
          <av-table-column-group>
             <template #groupcol>
+
                <av-table-column :colSpan="3" :colClass="['red','blue']"></av-table-column>
             </template>
          </av-table-column-group>
@@ -150,7 +153,23 @@ export default {
    name: 'basic',
    data() {
       return {
-         hoveredTable: false
+         hoveredTable: false,
+         tableData: [{
+            type: "caption",
+            children: []
+         }, {
+            type: "colgroup",
+            children: []
+         }, {
+            type: "col",
+            children: []
+         }, {
+            type: "thead",
+            children: []
+         }, {
+            type: "thead",
+            children: []
+         }]
       }
    },
    components: {
