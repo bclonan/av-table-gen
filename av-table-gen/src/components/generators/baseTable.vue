@@ -1,7 +1,6 @@
 <template>
 <div class="table-wrapper">
 
-
    <table>
       <caption>A summary of the UK's most famous punk bands</caption>
       <thead>
@@ -27,107 +26,91 @@
       </tfoot>
    </table>
 
-
    <hr>
-{{avTableDef}}
-<hr>
- <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
-   
+   {{avTableDef}}
+   <hr>
+   <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
+
       <template v-if="avTable.hasCaption" #tblCaption>
-         <av-table-caption  :class="[hoveredTable ? 'red' : 'blue']">
+         <av-table-caption :class="[hoveredTable ? 'red' : 'blue']">
             {{avTable.caption}}
          </av-table-caption>
       </template>
       <template v-if="avTable.colOpts" #tblCols>
 
+         <template v-for="(c, index) in avTable.colOpts">
 
-   <template v-for="(c, index) in avTable.colOpts">
-
-      
-      <av-table-column-group v-if="c.isGroup"  :key="c.id" >
-         <template v-for="(cChild, index) in c.colChildren"  :colChildren="cChild" #childCol>
-       <av-table-column :key="cChild.id" />
-
-       </template>
-      </av-table-column-group>
-
-
-      <av-table-column v-else  :key="c.id"  />
-
-   </template>
-
-
-
-      </template>
-  <template v-if="avTable.hasHead" #tblHead>
-         <av-table-head>
-            <av-table-row #rowContent>
-                <template v-for="(tblColumns, index) in avTable.columns" >
-
-
-            <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
-               {{tblColumns.title}}
-               </av-table-cell-header>
-
-             <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
-              
-               </av-table-cell>
-
+            <av-table-column-group v-if="c.isGroup" :key="c.id">
+               <template v-for="(cChild, index) in c.colChildren" :colChildren="cChild" #childCol>
+                  <av-table-column :key="cChild.id" />
 
                </template>
-            </av-table-row>
-         </av-table-head>
+            </av-table-column-group>
+
+            <av-table-column v-else :key="c.id" />
+
+         </template>
+
       </template>
-      
-  <template v-if="avTable.hasHead" #tblHead>
+      <template v-if="avTable.hasHead" #tblHead>
          <av-table-head>
             <av-table-row #rowContent>
-                <template v-for="(tblColumns, index) in avTable.columns" >
+               <template v-for="(tblColumns, index) in avTable.columns">
 
+                  <av-table-cell-header :key="index" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
+                     {{tblColumns.title}}
+                  </av-table-cell-header>
 
-            <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
-               {{tblColumns.title}}
-               </av-table-cell-header>
+                  <av-table-cell v-else :key="index" v-bind="tblColumns">
 
-             <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
-              
-               </av-table-cell>
-
+                  </av-table-cell>
 
                </template>
             </av-table-row>
          </av-table-head>
       </template>
 
+      <template v-if="avTable.hasHead" #tblHead>
+         <av-table-head>
+            <av-table-row #rowContent>
+               <template v-for="(tblColumns, index) in avTable.columns">
+
+                  <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
+                     {{tblColumns.title}}
+                  </av-table-cell-header>
+
+                  <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
+
+                  </av-table-cell>
+
+               </template>
+            </av-table-row>
+         </av-table-head>
+      </template>
 
       <template v-if="avTableData.length >= 1" #tableBody>
          <av-table-body>
-            <av-table-row #rowContent>
+            <template v-for="(item, index) in avTableData">
+               <av-table-row :key="index" #rowContent>
 
-                 <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
-               {{tblColumns.title}}
-               </av-table-cell-header>
+                  <template v-for="(column, indexColumn) in avTable.columns">
 
-             <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
-              
-               </av-table-cell>       
+                     <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" v-bind="item">
+                        {{item[column.field]}}
+                     </av-table-cell-header>
 
+                     <av-table-cell v-else :key="indexColumn" v-bind="item">
+                        {{item[column.field]}}
+                     </av-table-cell>
 
-              </av-table-row>  
-         </av-table-body>   
+                  </template>
+
+               </av-table-row>
+            </template>
+         </av-table-body>
       </template>
 
-<tbody v-for="(item, key, index) in tableDataMock" :key="index">
-         <tr v-for="(row, index) in item" :key="row.id" :>
-            <th v-if="row.type === 'td'">{{row.data}}</th>
-            <td v-else>{{row.data}}</td>
-
-         </tr>
-      </tbody>
-
-
-</av-table>
-
+   </av-table>
 
 </div>
 </template>
@@ -144,18 +127,12 @@ import avTableFoot from "@/components/semantic/avTableFoot"
 import avTableHead from "@/components/semantic/avTableHead"
 import avTableRow from "@/components/semantic/avTableRow"
 
-
-
-
-
-
-
 export default {
    name: 'baseTable',
    data() {
       return {
          hoveredTable: false,
-//json for a defining a table
+         //json for a defining a table
          avTableDef: [{
             hasCaption: true,
             caption: "Poster availability",
@@ -182,27 +159,18 @@ export default {
                   }]
                }
             ],
-            hasHead : true,
-            headerRows: [ {
+            hasHead: true,
+            headerRows: [{
                   title: "Name",
                   field: "name",
                   editor: "input"
                },
                {
-                  title: "Task Progress",
-                  field: "progress",
+                  title: "Email",
+                  field: "email",
                   align: "left",
                   formatter: "progress",
                   editor: true
-               },
-               {
-                  title: "Gender",
-                  field: "gender",
-                  width: 95,
-                  editor: "select",
-                  editorParams: {
-                     values: ["male", "female"]
-                  }
                },
                {
                   title: "Rating",
@@ -213,8 +181,8 @@ export default {
                   editor: true
                },
                {
-                  title: "Color",
-                  field: "col",
+                  title: "Mobile",
+                  field: "mobile",
                   width: 130,
                   editor: "input"
                },
@@ -244,21 +212,21 @@ export default {
                   field: "name",
                   editor: "input",
                   type: "td",
-                  scope : null,
-                  headers : [],
-                  rowSpan : null,
-                  colSpan : null
+                  scope: null,
+                  headers: [],
+                  rowSpan: null,
+                  colSpan: null
                },
                {
-                  title: "Task Progress",
-                  field: "progress",
+                  title: "Email",
+                  field: "email",
                   align: "left",
                   formatter: "progress",
                   editor: true,
                   type: "th",
-                  headers : [],
-                  rowSpan : null,
-                  colSpan : null
+                  headers: [],
+                  rowSpan: null,
+                  colSpan: null
                },
                {
                   title: "Rating",
@@ -267,20 +235,20 @@ export default {
                   align: "center",
                   width: 100,
                   type: "th",
-                  headers : [],
-                  rowSpan : null,
-                  colSpan : null
+                  headers: [],
+                  rowSpan: null,
+                  colSpan: null
                },
                {
-                  title: "Color",
-                  field: "col",
+                  title: "Mobile",
+                  field: "mobile",
                   width: 130,
                   editor: "input",
                   type: "th",
-                  scope : "col",
-                  headers : [],
-                  rowSpan : null,
-                  colSpan : null
+                  scope: "col",
+                  headers: [],
+                  rowSpan: null,
+                  colSpan: null
                },
                {
                   title: "Date Of Birth",
@@ -289,10 +257,10 @@ export default {
                   sorter: "date",
                   align: "center",
                   type: "th",
-                  scope : "col",
-                  headers : [],
-                  rowSpan : null,
-                  colSpan : null
+                  scope: "col",
+                  headers: [],
+                  rowSpan: null,
+                  colSpan: null
                }
             ],
             //data : this.avTableData
@@ -301,16 +269,21 @@ export default {
          avTableData: [{
                "name": "Parvez Ansari",
                "email": "ansariparvez@gmai.com",
+               "rating": 5,
                "mobile": "9998979695"
             },
             {
                "name": "Tayyeb Shaikh",
                "email": "tshaikh1981@gmai.com",
+
+               "rating": 55,
                "mobile": "9091929394"
             },
             {
                "name": "Ashfaque Shaikh",
                "email": "ashly786@gmai.com",
+
+               "rating": 125,
                "mobile": "8081828384"
             }
          ]

@@ -1,23 +1,17 @@
 <template>
-   <th :scope="scope" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
+   <th :scope="isScope" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
       <slot></slot>
    </th>
 </template>
 
 <script>
    export default {
-      name: "avTableCell",
+      name: "avTableCellHeader",
       props :{
          // row, col, rowgroup, colgroup, auto
          scope : {
             type : String,
-            default : 'auto',
-            validator: (prop) => [
-        'row',
-        'col',
-        'rowgroup',
-        'colgroup',
-      ].includes(prop)
+            default : 'auto'
          },
          colSpan : {
             type : Number,
@@ -56,6 +50,17 @@
             : typeof rowSpan == 'number' ?
             rowSpan
             : null;
+
+
+         },
+         isScope () {
+            const {scope} = this;
+            return !scope ?
+            'auto'
+            : scope.includes('row', 'col', 'rowgroup', 'colgroup') ?
+            scope
+            : null;
+
          }
       }
    }
