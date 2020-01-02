@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Create from '../views/Create.vue'
 import Preview from '../views/Preview.vue'
-
+import AVComponents from '../views/AVComponents.vue'
 //Remove
 import TableCheatSheet from '../views/tableCheatSheet.vue'
 
@@ -18,6 +18,11 @@ const routes = [{
         name: 'Preview',
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/Preview.vue')
+    },
+    {
+        path: '/AVComponents',
+        name: 'AVComponents',
+        component: AVComponents
     },
     {
         path: '/TableCheatSheet',
