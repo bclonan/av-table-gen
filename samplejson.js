@@ -32,6 +32,36 @@ let tabledata = [{
     }, { name: "James Newman", location: "Japan", gender: "male", col: "red", dob: "22/03/1998" }
 ];
 
+
+
+
+const tableDataMock = {
+    "tblID": [{
+            type: "td",
+            data: "hello"
+        },
+        {
+            type: "th",
+            data: "hello"
+        }
+    ],
+    "tbltwo": [{
+            type: "th",
+            data: "atb"
+        },
+        {
+            type: "th",
+            data: "hello"
+        }
+    ],
+}
+
+
+
+
+
+
+
 //define table
 var table = new Tabulator("#example-table", {
     height: "311px",
