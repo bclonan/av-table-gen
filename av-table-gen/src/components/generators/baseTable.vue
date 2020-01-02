@@ -98,11 +98,11 @@
 
                   <template v-for="(column, indexColumn) in avTable.columns">
 
-                     <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" v-bind="item" @clickedTCH="clickedTCHListener($event)" @focusedTCH="focusedTCHListener($event)">
+                     <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index" @clickedTCH="clickedTCHListener($event)" @focusedTCH="focusedTCHListener($event)">
                         {{item[column.field]}}
                      </av-table-cell-header>
 
-                     <av-table-cell v-else :key="indexColumn" v-bind="item" @clickedTC="clickedTCListener($event)" @focusedTC="focusedTCListener($event)">
+                     <av-table-cell v-else :key="indexColumn" v-bind="item" @clickedTC="clickedTCListener($event)" @focusedTC="focusedTCListener($event)" :cellValue="item[column.field]" :cellIndex="index">
                         {{item[column.field]}}
                      </av-table-cell>
 

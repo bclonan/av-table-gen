@@ -26,6 +26,12 @@
            default: function () {
         return []
       }
+         },
+         cellValue : {
+            type : [String, Number, Object, Array]
+         },
+         cellIndex : {
+            type : Number
          }
       },
       computed : {
@@ -73,10 +79,13 @@
         {
           // This ensures that the component works with v-model
           click: function (event) {
-            vm.$emit('clickedTCH', event.target.value)
+             if(vm.cellIndex) {
+                vm.$emit('clickedTCH', vm.cellIndex)
+             }
+            vm.$emit('clickedTCH', event.target)
           },
           mouseover: function(event){
-             vm.$emit('focusedTCH', event.target.value)
+             vm.$emit('focusedTCH', event.target)
           }
         }
       )
