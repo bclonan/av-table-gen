@@ -1,12 +1,15 @@
 <template>
    <main>
-      <basic />
+      <baseTable />
    </main>
 </template>
 
 <script>
-import basic from '@/components/generators/basic'
+import baseTable from '@/components/generators/baseTable'
    export default {
-      name : "PreviewTable"
+      name : "PreviewTable",
+      components : {
+         baseTable
+      }
    }
 </script>

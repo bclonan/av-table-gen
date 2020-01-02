@@ -1,6 +1,6 @@
 <template>
    <tr>
-
+      <slot name="rowContent"></slot>
    </tr>
 </template>
 

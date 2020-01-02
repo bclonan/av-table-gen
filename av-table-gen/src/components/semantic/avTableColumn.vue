@@ -1,5 +1,5 @@
 <template>
-   <col :span="colSpan" :class="colClass">
+   <col :span="colSpan" :class="colClass" :style="colStyle">
 </template>
 
 <script>
@@ -10,12 +10,17 @@
             type : Number,
             default : null
          },
+         colStyle : {
+            type : String,
+             default: null
+         },
          colClass : {
             type : Array,
-             default: function () {
+            default: function () {
             return []
          }
          }
       }
    }
-</script>
+</script> 
+        

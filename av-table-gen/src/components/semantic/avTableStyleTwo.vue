@@ -1,10 +1,13 @@
 // Parent
 <template>
 <table v-on="inputListeners">
-<slot name="tblCaption"></slot>
-<slot name="tblCols"></slot>
-<slot name="tblHead"></slot>
-<slot name="tableBody"></slot>
+<slot name="caption"></slot>
+<slot name="colgroup"></slot>
+<slot name="col"></slot>
+<slot name="thead"></slot>
+
+
+<slot name="tbody">
 <slot name="tfoot"></slot>
 </table>
 </template>
