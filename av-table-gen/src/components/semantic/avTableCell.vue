@@ -1,5 +1,5 @@
 <template>
-<td :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
+<td v-on="inputListeners" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
 
    <slot>
       &nbsp;
@@ -51,7 +51,26 @@ export default {
             typeof rowSpan == 'number' ?
             rowSpan :
             null;
-      }
+      },
+          inputListeners: function () {
+      var vm = this
+      // `Object.assign` merges objects together to form a new object
+      return Object.assign({},
+        // We add all the listeners from the parent
+        this.$listeners,
+        // Then we can add custom listeners or override the
+        // behavior of some listeners.
+        {
+          // This ensures that the component works with v-model
+          click: function (event) {
+            vm.$emit('clickedTC', event.target.value)
+          },
+          mouseover: function(event){
+             vm.$emit('focusedTC', event.target.value)
+          }
+        }
+      )
+    }
    }
 }
 </script>

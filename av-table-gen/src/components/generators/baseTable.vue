@@ -29,7 +29,10 @@
    <hr>
    {{avTableDef}}
    <hr>
-   <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
+
+   <!-- <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
+      -->
+   <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" >
 
       <template v-if="avTable.hasCaption" #tblCaption>
          <av-table-caption :class="[hoveredTable ? 'red' : 'blue']">
@@ -95,11 +98,11 @@
 
                   <template v-for="(column, indexColumn) in avTable.columns">
 
-                     <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" v-bind="item">
+                     <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" v-bind="item" @clickedTCH="clickedTCHListener($event)" @focusedTCH="focusedTCHListener($event)">
                         {{item[column.field]}}
                      </av-table-cell-header>
 
-                     <av-table-cell v-else :key="indexColumn" v-bind="item">
+                     <av-table-cell v-else :key="indexColumn" v-bind="item" @clickedTC="clickedTCListener($event)" @focusedTC="focusedTCListener($event)">
                         {{item[column.field]}}
                      </av-table-cell>
 
@@ -309,6 +312,18 @@ export default {
       hoverFunction() {
          this.hoveredTable = !this.hoveredTable
          console.log("hovered me")
+      },
+      clickedTCHListener(th){
+         console.log("clicked tch", th)
+      },
+      focusedTCHListener(th){
+          console.log("focused tch", th)
+      },
+      clickedTCListener(tc){
+         console.log("clicked tc", tc)
+      },
+      focusedTCListener(tc){
+          console.log("focused tc", tc)
       }
    }
 }

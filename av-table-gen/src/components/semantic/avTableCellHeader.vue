@@ -1,5 +1,5 @@
 <template>
-   <th :scope="isScope" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
+   <th v-on="inputListeners" :scope="isScope" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
       <slot></slot>
    </th>
 </template>
@@ -61,7 +61,26 @@
             scope
             : null;
 
-         }
+         },
+             inputListeners: function () {
+      var vm = this
+      // `Object.assign` merges objects together to form a new object
+      return Object.assign({},
+        // We add all the listeners from the parent
+        this.$listeners,
+        // Then we can add custom listeners or override the
+        // behavior of some listeners.
+        {
+          // This ensures that the component works with v-model
+          click: function (event) {
+            vm.$emit('clickedTCH', event.target.value)
+          },
+          mouseover: function(event){
+             vm.$emit('focusedTCH', event.target.value)
+          }
+        }
+      )
+    }
       }
    }
 </script>
