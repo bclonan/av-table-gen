@@ -1,6 +1,6 @@
 <template>
 <main>
-   <styled-table />
+   <styled-table :avTableDef="fakeTableData"/>
 </main>
 </template>
 
@@ -11,9 +11,20 @@ import styledTable from '@/components/generators/styledTable.vue'
 import baseTable from '@/components/generators/baseTable'
    export default {
       name : "PreviewTable",
+      created() {
+         this.fakeTableData = this.$fakeTable
+      },
       components : {
          styledTable
-      }
+      },
+      data() {
+         return {
+            fakeTableData: []
+         }
+      },
+      computed: {
+        
+      },
    }
 </script>
 

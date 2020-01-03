@@ -1,6 +1,9 @@
 <template>
    <th v-on="inputListeners" :scope="isScope" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
       <slot></slot>
+         <slot name="tbodyContent">
+    
+   </slot>
    </th>
 </template>
 

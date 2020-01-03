@@ -1,7 +1,10 @@
 <template>
 <td v-on="inputListeners" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
 
-   <slot>
+ <slot >
+      &nbsp;
+   </slot>
+   <slot name="tbodyContent">
       &nbsp;
    </slot>
 </td>
