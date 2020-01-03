@@ -65,12 +65,12 @@ export default {
         // behavior of some listeners.
         {
           // This ensures that the component works with v-model
-          click: function (event) {
-            vm.$emit('clickedTC', event.target.value)
-          },
-          mouseover: function(event){
-             vm.$emit('focusedTC', event.target.value)
-          }
+         //  click: function (event) {
+         //    vm.$emit('clickedTC', event.target.value)
+         //  },
+         //  mouseover: function(event){
+         //     vm.$emit('focusedTC', event.target.value)
+         //  }
         }
       )
     }

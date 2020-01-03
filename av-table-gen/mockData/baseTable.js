@@ -21,17 +21,78 @@ function createFakeBaseTable() {
 
 
 
-function createTableData(count) {
-    var randomName = faker.name.findName(); // Rowan Nikolaus
-    var randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
-    var randomCard = faker.helpers.createCard(); // random contact card containing many properties
-    let shortid = shortid.generate();
+function createTableData(dataCount) {
+
+
 
     var mockData = [];
     var i;
     for (i = 0; i < dataCount; i++) {
-        text += i + "<br>";
+
+
+        var ranpeoples = faker.name.findName()
+        var ranstatus = faker.random.number(5);
+        var rantext = faker.lorem.words();
+        var randate = faker.date.between('2018-01-01', '2022-12-31');
+        var rannumbers = faker.random.number();
+        var rantimeline = faker.date.between();
+        var rantags = faker.random.arrayElement();
+        var ranrating = faker.random.number(5);
+        var ranworldClock = faker.date.recent(15);
+        var rancheckbox = faker.random.boolean();
+        var ranlink = faker.internet.url();
+        var ranlog = faker.lorem.sentence();
+        //var ranautoInt = faker.
+        var rancountryCol = faker.address.country();
+        var ranvote = faker.random.number(55);
+        var ranteamCol = faker.image.business();
+        var ranlocationCol = faker.address.country();
+        var ranweekCol = faker.date.weekday();
+        var ranprogressTrack = faker.random.number(100);
+        var ranlongTextCol = faker.random.words(30);
+        var ranphoneCol = faker.phone.phoneNumber();
+        var ranitemIdCol = faker.random.uuid();
+        var ranformulaCol = null;
+        var rancolorPicker = faker.random.alphaNumeric(5);
+        var ranlastUpdated = faker.date.weekday();
+        var rantimeTrackingCol = faker.date.future();
+        var ranfileCol = faker.image.imageUrl();
+        var ranemailCol = faker.internet.email();
+
+
+        mockData.push({
+            peoples: "https://source.unsplash.com/random",
+            status: ranstatus, // Accepts string, 100, 1- 5
+            text: rantext,
+            date: randate,
+            numbers: rannumbers,
+            timeline: rantimeline,
+            tags: rantags,
+            rating: ranrating,
+            worldClock: ranworldClock,
+            checkbox: rancheckbox,
+            link: ranlink,
+            log: ranlog,
+            autoInt: i,
+            countryCol: rancountryCol,
+            vote: ranvote,
+            teamCol: ranteamCol,
+            locationCol: ranlocationCol,
+            weekCol: ranweekCol,
+            progressTrack: ranprogressTrack,
+            longTextCol: ranlongTextCol,
+            phoneCol: ranphoneCol,
+            itemIdCol: ranitemIdCol,
+            formulaCol: ranformulaCol,
+            colorPicker: rancolorPicker,
+            lastUpdated: ranlastUpdated,
+            timeTrackingCol: rantimeTrackingCol,
+            fileCol: ranfileCol,
+            emailCol: ranemailCol
+        })
     }
+
+    return mockData;
 }
 
 function createFakeTableWithAllColOptionsData() {
@@ -202,7 +263,7 @@ function createFakeTableWithAllColOptionsData() {
             headers: [],
             rowSpan: null,
             colSpan: null,
-            formatter: "col-autoInt",
+            formatter: "col-autoint",
             formatterParams: {}
         },
         {
@@ -357,7 +418,17 @@ function createFakeTableWithAllColOptionsData() {
             colSpan: null,
             formatter: "col-file",
             formatterParams: {}
-        }
+        }, {
+            title: "Email",
+            field: "emailCol",
+            type: "th",
+            scope: null,
+            headers: [],
+            rowSpan: null,
+            colSpan: null,
+            formatter: "col-email",
+            formatterParams: {}
+        },
     ];
 
 
@@ -383,5 +454,6 @@ function createFakeTableWithAllColOptionsData() {
 
 
 export {
-    createFakeTableWithAllColOptionsData
+    createFakeTableWithAllColOptionsData,
+    createTableData
 }

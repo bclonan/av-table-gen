@@ -1,7 +1,7 @@
 <template>
    <th v-on="inputListeners" :scope="isScope" :colspan="isColSpan" :rowspan="isRowSpan" :headers="headers.toString()">
       <slot></slot>
-         <slot name="tbodyContent">
+      <slot name="tbodyContent"  >
     
    </slot>
    </th>
@@ -31,7 +31,7 @@
       }
          },
          cellValue : {
-            type : [String, Number, Object, Array]
+             type: [String, Object, Number, Array, Date, Boolean ]
          },
          cellIndex : {
             type : Number
@@ -81,15 +81,15 @@
         // behavior of some listeners.
         {
           // This ensures that the component works with v-model
-          click: function (event) {
-             if(vm.cellIndex) {
-                vm.$emit('clickedTCH', vm.cellIndex)
-             }
-            vm.$emit('clickedTCH', event.target)
-          },
-          mouseover: function(event){
-             vm.$emit('focusedTCH', event.target)
-          }
+         //  click: function (event) {
+         //     if(vm.cellIndex) {
+         //        vm.$emit('clickedTCH', vm.cellIndex)
+         //     }
+         //    vm.$emit('clickedTCH', event.target)
+         //  },
+         //  mouseover: function(event){
+         //     vm.$emit('focusedTCH', event.target)
+         //  }
         }
       )
     }

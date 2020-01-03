@@ -6,7 +6,7 @@
 
 <script>
    export default {
-      name: "colTimeTracking",
+      name: "colEmail",
          props: {
       formatterParams: {
          type: Object,
@@ -15,7 +15,7 @@
          }
       },
       cellValue: {
-         type: [String, Object, Array, Date]
+         type: [String, Object, Array]
       },
       columnObj : {
          type : Object,
