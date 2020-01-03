@@ -1,7 +1,11 @@
 <template>
-   <div>
-      <slot></slot>
-   </div>
+   <p>
+     
+      <slot :cellValue="cellValue | truncate(hasMaxLength)">
+         {{cellValue | truncate(hasMaxLength)}}
+
+      </slot>
+   </p>
 </template>
 
 <script>
@@ -36,5 +40,16 @@
          default : null
       }
    },
+   computed : {
+
+      hasMaxLength () {
+            const {formatterParams} = this;
+            return !formatterParams.maxLength ?
+            10
+            : formatterParams.maxLength;
+
+
+         },
+   }
    }
 </script>

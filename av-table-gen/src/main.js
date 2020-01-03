@@ -16,6 +16,14 @@ console.log(mockTable)
 Vue.prototype.$fakeTable = [mockTable];
 
 
+Vue.filter('truncate', function(value, limit) {
+    if (value.length > limit) {
+        value = value.substring(0, (limit - 3)) + '...';
+    }
+
+    return value
+})
+
 new Vue({
     router,
     store,

@@ -1,38 +1,19 @@
 <template>
 <div class="table-wrapper">
 
-   <table>
-      <caption>A summary of the UK's most famous punk bands</caption>
-      <thead>
-         <tr>
-            <th scope="col">Band</th>
-            <th scope="col">Year formed</th>
-            <th scope="col">No. of Albums</th>
-            <th scope="col">Most famous song</th>
-         </tr>
-      </thead>
-      <!-- <tbody v-for="(item, key, index) in tableDataMock" :key="index">
-         <tr v-for="(row, index) in item" :key="row.id" :>
-            <th v-if="row.type === 'td'">{{row.data}}</th>
-            <td v-else>{{row.data}}</td>
 
-         </tr>
-      </tbody> -->
-      <tfoot>
-         <tr>
-            <th scope="row" colspan="2">Total albums</th>
-            <td colspan="2">77</td>
-         </tr>
-      </tfoot>
-   </table>
 
    <hr>
-   {{avTableDef}}
+   <!-- {{avTableDef}} -->
    <hr>
 
    <!-- <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
       -->
-   <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id">
+      <div class="fixedTable">
+       
+         <div id="table-scroll" class="table-scroll">
+       
+   <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" id="main-table" class="main-table">
 
       <template v-if="avTable.hasCaption" #tblCaption>
          <av-table-caption :class="[hoveredTable ? 'red' : 'blue']">
@@ -103,15 +84,17 @@
                         <template #tbodyContent>
 
                            <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column">
-                              <template :default="slotProps">
+                               {{item[column.field]}}
+
+                              <!-- <template :default="slotProps">
 
                                  {{item[column.field]}}
 
                                  <!-- <button v-slot:behavior="{on: on, actions : actions}" v-if="column.formatter ==='col-peoples'" v-bind="{ on, actions }">
 
                            </button> -->
-                                 <!-- <highlight-on-hover v-slot:behavior="{on: on, actions : actions}" v-if="column.formatter ==='col-peoples'" v-bind="{ on, actions }"/> -->
-                              </template>
+                                 <!-- <highlight-on-hover v-slot:behavior="{on: on, actions : actions}" v-if="column.formatter ==='col-peoples'" v-bind="{ on, actions }"/> 
+                              </template> -->
                            </component>
                         </template>
 
@@ -139,6 +122,8 @@
       </template>
 
    </av-table>
+   </div>
+   </div>
 
    <hr />
 
@@ -454,22 +439,4 @@ export default {
 }
 </script>
 
-<style>
-table {
-   width: 100%;
-}
 
-table,
-td,
-th {
-   border: 1px solid black;
-}
-
-/* caption {
-   caption-side: bottom;
-} */
-
-.red {
-   color: red;
-}
-</style>
