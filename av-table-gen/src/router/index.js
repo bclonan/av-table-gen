@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Create from '../views/Create.vue'
 import Preview from '../views/Preview.vue'
 import AVComponents from '../views/AVComponents.vue'
+import AVTableSample from '../views/AVTableSample.vue'
+
 //Remove
 import TableCheatSheet from '../views/tableCheatSheet.vue'
 
@@ -24,6 +26,12 @@ const routes = [{
         name: 'AVComponents',
         component: AVComponents
     },
+    {
+        path: '/AVTableSample',
+        name: 'AVTableSample',
+        component: AVTableSample
+    },
+
     {
         path: '/TableCheatSheet',
         name: 'TableCheatSheet',
