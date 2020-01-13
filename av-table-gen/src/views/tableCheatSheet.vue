@@ -3347,7 +3347,7 @@ export default {
       z-index: 1;
       margin: auto;
       overflow: auto;
-      height: 350px;
+      height: 75vh;
    }
 
    .table-scroll table {

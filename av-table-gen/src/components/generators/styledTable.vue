@@ -1,128 +1,126 @@
 <template>
 <div class="table-wrapper">
 
-
-
    <hr>
    <!-- {{avTableDef}} -->
    <hr>
 
    <!-- <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
       -->
-      <div class="fixedTable">
-       
-         <div id="table-scroll" class="table-scroll">
-       
-   <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" id="main-table" class="main-table">
+   <div class="fixedTable">
 
-      <template v-if="avTable.hasCaption" #tblCaption>
-         <av-table-caption :class="[hoveredTable ? 'red' : 'blue']">
-            {{avTable.caption}}
-         </av-table-caption>
-      </template>
-      <template v-if="avTable.colOpts" #tblCols>
+      <div id="table-scroll" class="table-scroll">
 
-         <template v-for="(c, index) in avTable.colOpts">
+         <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" id="main-table" class="main-table">
 
-            <av-table-column-group v-if="c.isGroup" :key="c.id">
-               <template v-for="(cChild, index) in c.colChildren" :colChildren="cChild" #childCol>
-                  <av-table-column :key="cChild.id" />
+            <template v-if="avTable.hasCaption" #tblCaption>
+               <av-table-caption :class="[hoveredTable ? 'red' : 'blue']">
+                  {{avTable.caption}}
+               </av-table-caption>
+            </template>
+            <template v-if="avTable.colOpts" #tblCols>
 
-               </template>
-            </av-table-column-group>
+               <template v-for="(c, index) in avTable.colOpts">
 
-            <av-table-column v-else :key="c.id" />
+                  <av-table-column-group v-if="c.isGroup" :key="c.id">
+                     <template v-for="(cChild, index) in c.colChildren" :colChildren="cChild" #childCol>
+                        <av-table-column :key="cChild.id" />
 
-         </template>
+                     </template>
+                  </av-table-column-group>
 
-      </template>
-      <template v-if="avTable.hasHead" #tblHead>
-         <av-table-head>
-            <av-table-row #rowContent>
-               <template v-for="(tblColumns, index) in avTable.columns">
-
-                  <av-table-cell-header :key="index" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
-                     {{tblColumns.title}}
-                  </av-table-cell-header>
-
-                  <av-table-cell v-else :key="index" v-bind="tblColumns">
-
-                  </av-table-cell>
+                  <av-table-column v-else :key="c.id" />
 
                </template>
-            </av-table-row>
-         </av-table-head>
-      </template>
 
-      <template v-if="avTable.hasHead" #tblHead>
-         <av-table-head>
-            <av-table-row #rowContent>
-               <template v-for="(tblColumns, index) in avTable.columns">
+            </template>
+            <template v-if="avTable.hasHead" #tblHead>
+               <av-table-head>
+                  <av-table-row #rowContent>
+                     <template v-for="(tblColumns, index) in avTable.columns">
 
-                  <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
-                     {{tblColumns.title}}
-                  </av-table-cell-header>
+                        <av-table-cell-header :key="index" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
+                           {{tblColumns.title}}
+                        </av-table-cell-header>
 
-                  <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
+                        <av-table-cell v-else :key="index" v-bind="tblColumns">
 
-                  </av-table-cell>
+                        </av-table-cell>
 
-               </template>
-            </av-table-row>
-         </av-table-head>
-      </template>
+                     </template>
+                  </av-table-row>
+               </av-table-head>
+            </template>
 
-      <template v-if="avTableMData.length >= 1" #tableBody>
-         <av-table-body>
-            <template v-for="(item, index) in avTableMData">
-               <av-table-row :key="index" #rowContent>
+            <template v-if="avTable.hasHead" #tblHead>
+               <av-table-head>
+                  <av-table-row #rowContent>
+                     <template v-for="(tblColumns, index) in avTable.columns">
 
-                  <template v-for="(column, indexColumn) in avTable.columns">
+                        <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
+                           {{tblColumns.title}}
+                        </av-table-cell-header>
 
-                     <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index">
+                        <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
 
-                        <template #tbodyContent>
+                        </av-table-cell>
 
-                           <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column">
-                               {{item[column.field]}}
+                     </template>
+                  </av-table-row>
+               </av-table-head>
+            </template>
 
-                              <!-- <template :default="slotProps">
+            <template v-if="avTableMData.length >= 1" #tableBody>
+               <av-table-body>
+                  <template v-for="(item, index) in avTableMData">
+                     <av-table-row :key="index" #rowContent>
+
+                        <template v-for="(column, indexColumn) in avTable.columns">
+
+                           <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index">
+
+                              <template #tbodyContent>
+
+                                 <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column">
+                                    {{item[column.field]}}
+
+                                    <!-- <template :default="slotProps">
 
                                  {{item[column.field]}}
 
                                  <!-- <button v-slot:behavior="{on: on, actions : actions}" v-if="column.formatter ==='col-peoples'" v-bind="{ on, actions }">
 
                            </button> -->
-                                 <!-- <highlight-on-hover v-slot:behavior="{on: on, actions : actions}" v-if="column.formatter ==='col-peoples'" v-bind="{ on, actions }"/> 
+                                    <!-- <highlight-on-hover v-slot:behavior="{on: on, actions : actions}" v-if="column.formatter ==='col-peoples'" v-bind="{ on, actions }"/> 
                               </template> -->
-                           </component>
+                                 </component>
+                              </template>
+
+                           </av-table-cell-header>
+
+                           <av-table-cell v-else :key="indexColumn" v-bind="item" :cellValue="item[column.field]" :cellIndex="index">
+
+                              <template #tbodyContent>
+
+                                 <component :is="column.formatter" :formatterOptions="column.formatterParams">
+
+                                    {{item[column.field]}}
+                                    {{column.formatter}}
+                                 </component>
+
+                              </template>
+
+                           </av-table-cell>
+
                         </template>
 
-                     </av-table-cell-header>
-
-                     <av-table-cell v-else :key="indexColumn" v-bind="item" :cellValue="item[column.field]" :cellIndex="index">
-
-                        <template #tbodyContent>
-
-                           <component :is="column.formatter" :formatterOptions="column.formatterParams">
-
-                              {{item[column.field]}}
-                              {{column.formatter}}
-                           </component>
-
-                        </template>
-
-                     </av-table-cell>
-
+                     </av-table-row>
                   </template>
-
-               </av-table-row>
+               </av-table-body>
             </template>
-         </av-table-body>
-      </template>
 
-   </av-table>
-   </div>
+         </av-table>
+      </div>
    </div>
 
    <hr />
@@ -173,8 +171,6 @@ import colVote from "@/components/formatters/v1/colVote"
 import colWeek from "@/components/formatters/v1/colWeek"
 import colWorldclock from "@/components/formatters/v1/colWorldclock"
 import colEmail from "@/components/formatters/v1/colEmail"
-
-
 
 //Behavior components
 import HighlightOnHover from "@/components/behaviors/v1/HighlightOnHover"
@@ -438,5 +434,3 @@ export default {
    }
 }
 </script>
-
-
