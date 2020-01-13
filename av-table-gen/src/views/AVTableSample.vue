@@ -51,10 +51,12 @@
                   <template v-for="(item, index) in avTableMData">
                      <av-table-row :key="index" #rowContent>
                         <template v-for="(column, indexColumn) in avTable.columns">
-                           <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index">
+                           <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index" @click="avActivateEditor(item[column.field],column.field,indexColumn,  index,column.formatterParams)">
                               <template #tbodyContent>
+
+                                   <component v-if="indexColumn === editColumn && index === editIndex" :is="editWrapper"  :field="editField"  :inputOptions="editOptions" @sendValUpdate="avChangeData($event)" />
                                  <!-- oldValue, fieldName, dataColumn, dataIndex, editComponent, editOptions -->
-                                 <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column" @editCell="avActivateEditor(item[column.field],column.field,indexColumn,  index,column.formatter,  $event)" >
+                                 <component v-else :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column"  >
                                     {{item[column.field]}}
                                     <div>
                                        {{`index:${index}`}}
@@ -67,7 +69,7 @@
                                        {{}}
                                        </template> -->
                                  </component>
-                                 <component v-if="indexColumn === editColumn && index === editIndex" :is="editWrapper"  :field="editField"  :inputOptions="editOptions" />
+                               
                               </template>
                            </av-table-cell-header>
                            <av-table-cell v-else :key="indexColumn" v-bind="item" :cellValue="item[column.field]" :cellIndex="index">
@@ -212,7 +214,8 @@ export default {
          editOptions : null,
          editColumn : null,
          editIndex : null,
-         oldValue : null
+         oldValue : null,
+         targFieldName : null
          //json for a defining a table
 
       }
@@ -237,32 +240,59 @@ export default {
       focusedTCListener(tc) {
          console.log("focused tc", tc)
       },
-      avActivateEditor(oldValue, fieldName, dataColumn, dataIndex, editComponent, editOptions) {
-         console.table(oldValue, fieldName, dataColumn, dataIndex, editComponent, editOptions)
-         let placeField = fieldName;
-         let editWrapper = editOptions.editorType || "avTextRow";
+      editValue() {
+         console.log("this")
+         
+         let additionalEditOptions = false;
 
+         if(this.formatterParams.editOptions){
+            additionalEditOptions = {...this.formatterParams.editOptions}
+           return this.$emit('editCell', additionalEditOptions)
+         }
+
+         return this.$emit('editCell', additionalEditOptions)
+         
+      },
+      avActivateEditor(oldValue, fieldName, dataColumn, dataIndex, editComponent, formatterParams) {
+         this.oldValue = oldValue;
+         // ({ labelShown = false, labelText = null, srOnly = false , helpText  null, errorClass = null, validation = null } = formatterParams);
+         //  ({ ...rest } = formatterParams);
+         let defaultEditOptions = {
+            labelShown : false,
+            labelText : null,
+            srOnly : false,
+            helpText : null,
+            errorClass : null,
+            validation : null,
+            componentType : "avText"
+         };
+         const userOptions = Object.assign(defaultEditOptions, formatterParams);
+
+         console.log(userOptions)
+      
+         let editWrapper = userOptions.editorType || "avTextRow";
+         this.targFieldName = fieldName;
          let compFieldData = {
             tabIndex : 1,
-            component : null,
+            component : userOptions.componentType,
             type : "text",
             placeholder : null,
             formID : fieldName,
             value : oldValue || null,
             label : {
                labelFor : fieldName,
-               labelShown : editOptions.labelShown || false,
-               labelText : editOptions.labelText || null,
-               srOnly : editOptions.srOnly || false
+               labelShown : userOptions.labelShown,
+               labelText : userOptions.labelText,
+               srOnly : userOptions.srOnly
             },
             pattern : null,
             disabled : false,
             readOnly : false,
             spellCheck : false,
             required : false,
-            helpText : editOptions.helpText || null,
-            errorClass : editOptions.errorClass || null,
-            validation : editOptions.validation || null
+            helpText : userOptions.helpText,
+            errorClass : userOptions.errorClass,
+            validation : userOptions.validation
          }
 
       if(editWrapper === "avTextRow") { 
@@ -290,11 +320,15 @@ export default {
 
          console.table(compFieldData)
       },
-      avChangeData(newValue, dataIndex, objectField) {
-         // console.log(newValue, dataIndex, objectField)
+      avChangeData(newValue) {
+         console.log(newValue)
+         const eInd = this.editIndex;
+         const eField = this.targFieldName;
+
+         if(this.oldValue === newValue) {return console.log("no changes made")}
          // this.avTableMData[dataIndex][objectField] = data;
 
-         this.$set(this.avTableMData[dataIndex], objectField, newValue);
+         this.$set(this.avTableMData[eInd], eField, newValue);
       }
    }
 }

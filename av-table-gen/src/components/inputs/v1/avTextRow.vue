@@ -2,7 +2,7 @@
 <transition>
 <div class="w-full px-3 mb-6 md:mb-0">
    <av-label v-show="field.label" v-bind="field.label" />
-   <component :is="field.component" v-bind="field" :value="field.value" @input="updateForm($event)" @selectUpdate="upSelectForm($event)" />
+   <component :is="field.component" v-bind="field" :value="field.value" @input="updateForm(field.formID, $event)" @selectUpdate="upSelectForm($event)" v-click-outside="onClickOutside"/>
    <p v-if="field.helpText" class=" text-xs italic xyzHelpText">{{field.helpText}}</p>
    <div v-if="field.toolTipText && field.enableTooltips" :id="field.formID" class="xyztooltip" :class="[activeTooltipHover === field.formID ? 'visbleTooltip' : 'hiddenTooltip']" role="tooltip" :aria-hidden="[activeTooltipHover === field.formID ? false : true]">{{field.toolTipText}}</div>
 </div>
@@ -40,14 +40,23 @@ export default {
    },
    data() {
       return {
-         activeTooltipHover: null
-         //formData: this.value || {}
+         activeTooltipHover: null,
+         formData: this.value || {},
+         formValue : this.value || null
       };
    },
    methods: {
-      updateForm(value) {
-         console.log(value)
+      updateForm(formID, value) {
+         console.log(formID, value)
+          this.$set(this.formData, formID, value);
+          this.formValue = value;
          //this.$emit("sendValUpdate", value);
+      },
+      onClickOutside (event, el) {
+        console.log('Clicked outside. Event: ', event)
+        const value = event.target.value;
+        const fdata = this.formValue;
+        this.$emit("sendValUpdate", fdata);
       },
       upSelectForm(selectObj) {
          console.log(selectObj);

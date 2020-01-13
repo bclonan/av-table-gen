@@ -1,6 +1,6 @@
 <template>
 <div >
-   <p  @click="editValue"> {{truncatedText ? truncatedText : cellValue}}</p>
+   <p> {{truncatedText ? truncatedText : cellValue}}</p>
    
 </div>
 </template>
@@ -16,7 +16,8 @@ export default {
          }
       },
       cellValue: {
-         type: [String, Object, Array]
+         type: String,
+         default: ""
       },
       columnObj: {
          type: Object,
@@ -50,18 +51,6 @@ export default {
       },
       updateValue(e) {
          this.newValue = e.target.value;
-      },
-      editValue() {
-         console.log("this")
-         let additionalEditOptions = false;
-
-         if(this.formatterParams.editOptions){
-            additionalEditOptions = {...this.formatterParams.editOptions}
-           return this.$emit('editCell', additionalEditOptions)
-         }
-
-         return this.$emit('editCell', additionalEditOptions)
-         
       }
    },
    computed: {
@@ -71,7 +60,9 @@ export default {
             cellValue
          } = this;
          return !formatterParams.maxLength ?
+            false : !cellValue ?
             false :
+            
             cellValue.substring(0, formatterParams.maxLength);
 
       },
