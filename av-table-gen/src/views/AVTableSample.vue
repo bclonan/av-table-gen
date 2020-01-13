@@ -2,11 +2,6 @@
 <div class="table-wrapper">
    Data on created
    <hr>
-   <!-- {{avTableDef}} -->
-   <hr>
-
-   <!-- <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" @clickedMe="sampleFunction" @focusedMe="hoverFunction">
-      -->
    <div class="fixedTable">
 
       <div id="table-scroll" class="table-scroll">
@@ -76,19 +71,19 @@
                      <av-table-row :key="index" #rowContent>
 
                         <template v-for="(column, indexColumn) in avTable.columns">
-                           
+
                            <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index">
 
                               <template #tbodyContent>
 
                                  <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column" @saveDataChange="avChangeData($event, index, column.field)">
                                     {{item[column.field]}}
-   <div>{{`index:${index}`}}
-                                 <hr>
-                                 {{`indexColumn:${indexColumn}`}}
-                                 <hr>
-                                 {{`column Field:${column.field}`}}
-                                 </div>
+                                    <div>{{`index:${index}`}}
+                                       <hr>
+                                       {{`indexColumn:${indexColumn}`}}
+                                       <hr>
+                                       {{`column Field:${column.field}`}}
+                                    </div>
                                     <!-- <template #cellContent>
                                        {{}}
                                     </template> -->
@@ -132,10 +127,9 @@
 import baseTable from '@/components/generators/baseTable'
 
 // DEV MODe
-import { createTableData } from '../../mockData/baseTable'
-
-
-
+import {
+   createTableData
+} from '../../mockData/baseTable'
 
 import avTable from "@/components/semantic/avTable"
 import avTableBody from "@/components/semantic/avTableBody"
@@ -185,11 +179,11 @@ import HighlightOnHover from "@/components/behaviors/v1/HighlightOnHover"
 
 export default {
    name: 'AVTableSample',
- 
-created() {
-         this.avTableDef = this.$fakeTable,
+
+   created() {
+      this.avTableDef = this.$fakeTable,
          this.avTableMData = createTableData(599);
-      },
+   },
    components: {
       avTable,
       avTableBody,
@@ -236,10 +230,9 @@ created() {
    data() {
       return {
          hoveredTable: false,
-         avTableDef : [],
-         avTableMData : []
+         avTableDef: [],
+         avTableMData: []
          //json for a defining a table
-        
 
       }
    },
@@ -267,12 +260,11 @@ created() {
          // console.log(newValue, dataIndex, objectField)
          // this.avTableMData[dataIndex][objectField] = data;
 
-            this.$set(this.avTableMData[dataIndex], objectField, newValue);
+         this.$set(this.avTableMData[dataIndex], objectField, newValue);
       }
    }
 }
 </script>
-
 
 <style lang="scss">
 .fixedTable {
@@ -350,6 +342,14 @@ created() {
       position: -webkit-sticky;
       position: sticky;
       left: 0;
+      z-index: 2;
+      background: #ccc;
+   }
+
+      th:last-child {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
       z-index: 2;
       background: #ccc;
    }
