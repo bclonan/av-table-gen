@@ -263,9 +263,11 @@ created() {
       focusedTCListener(tc) {
          console.log("focused tc", tc)
       },
-      avChangeData(data, dataIndex, objectField) {
-         console.log(data, dataIndex, objectField)
-         this.avTableMData[dataIndex][objectField] = data;
+      avChangeData(newValue, dataIndex, objectField) {
+         // console.log(newValue, dataIndex, objectField)
+         // this.avTableMData[dataIndex][objectField] = data;
+
+            this.$set(this.avTableMData[dataIndex], objectField, newValue);
       }
    }
 }
