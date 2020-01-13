@@ -3,82 +3,61 @@
    Data on created
    <hr>
    <div class="fixedTable">
-
       <div id="table-scroll" class="table-scroll">
-
          <av-table v-for="(avTable, index) in avTableDef" :key="avTable.id" id="main-table" class="main-table">
-
             <template v-if="avTable.hasCaption" #tblCaption>
                <av-table-caption :class="[hoveredTable ? 'red' : 'blue']">
                   {{avTable.caption}}
                </av-table-caption>
             </template>
             <template v-if="avTable.colOpts" #tblCols>
-
                <template v-for="(c, index) in avTable.colOpts">
-
                   <av-table-column-group v-if="c.isGroup" :key="c.id">
                      <template v-for="(cChild, index) in c.colChildren" :colChildren="cChild" #childCol>
                         <av-table-column :key="cChild.id" />
-
                      </template>
                   </av-table-column-group>
-
                   <av-table-column v-else :key="c.id" />
-
                </template>
-
             </template>
             <template v-if="avTable.hasHead" #tblHead>
                <av-table-head>
                   <av-table-row #rowContent>
                      <template v-for="(tblColumns, index) in avTable.columns">
-
                         <av-table-cell-header :key="index" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
                            {{tblColumns.title}}
                         </av-table-cell-header>
-
                         <av-table-cell v-else :key="index" v-bind="tblColumns">
-
                         </av-table-cell>
-
                      </template>
                   </av-table-row>
                </av-table-head>
             </template>
-
             <template v-if="avTable.hasHead" #tblHead>
                <av-table-head>
                   <av-table-row #rowContent>
                      <template v-for="(tblColumns, index) in avTable.columns">
-
                         <av-table-cell-header :key="tblColumns.id" v-if="tblColumns.type === 'th'" v-bind="tblColumns">
                            {{tblColumns.title}}
                         </av-table-cell-header>
-
                         <av-table-cell v-else :key="tblColumns.id" v-bind="tblColumns">
-
                         </av-table-cell>
-
                      </template>
                   </av-table-row>
                </av-table-head>
             </template>
-
             <template v-if="avTableMData.length >= 1" #tableBody>
                <av-table-body>
                   <template v-for="(item, index) in avTableMData">
                      <av-table-row :key="index" #rowContent>
-
                         <template v-for="(column, indexColumn) in avTable.columns">
-
                            <av-table-cell-header :key="indexColumn" v-if="column.type === 'th'" :cellValue="item[column.field]" :cellIndex="index">
-
                               <template #tbodyContent>
-
-                                 <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column" @saveDataChange="avChangeData($event, index, column.field)">
+                                 <!-- oldValue, fieldName, dataColumn, dataIndex, editComponent, editOptions -->
+                                 <component :is="column.formatter" :formatterParams="column.formatterParams" :cellValue="item[column.field]" v-bind="column" @editCell="avActivateEditor(item[column.field],column.field,indexColumn,  index,column.formatter,  $event)" >
                                     {{item[column.field]}}
-                                    <div>{{`index:${index}`}}
+                                    <div>
+                                       {{`index:${index}`}}
                                        <hr>
                                        {{`indexColumn:${indexColumn}`}}
                                        <hr>
@@ -86,40 +65,28 @@
                                     </div>
                                     <!-- <template #cellContent>
                                        {{}}
-                                    </template> -->
+                                       </template> -->
                                  </component>
-
+                                 <component v-if="indexColumn === editColumn && index === editIndex" :is="editWrapper"  :field="editField"  :inputOptions="editOptions" />
                               </template>
-
                            </av-table-cell-header>
-
                            <av-table-cell v-else :key="indexColumn" v-bind="item" :cellValue="item[column.field]" :cellIndex="index">
-
                               <template #tbodyContent>
-
                                  <component :is="column.formatter" :formatterOptions="column.formatterParams">
-
                                     {{item[column.field]}}
                                     {{column.formatter}}
                                  </component>
-
                               </template>
-
                            </av-table-cell>
-
                         </template>
-
                      </av-table-row>
                   </template>
                </av-table-body>
             </template>
-
          </av-table>
       </div>
    </div>
-
-   <hr />
-
+  
 </div>
 </template>
 
@@ -130,6 +97,8 @@ import baseTable from '@/components/generators/baseTable'
 import {
    createTableData
 } from '../../mockData/baseTable'
+
+
 
 import avTable from "@/components/semantic/avTable"
 import avTableBody from "@/components/semantic/avTableBody"
@@ -177,12 +146,16 @@ import colEmail from "@/components/formatters/v1/colEmail"
 //Behavior components
 import HighlightOnHover from "@/components/behaviors/v1/HighlightOnHover"
 
+//Input Components
+import avTextRow from "@/components/inputs/v1/avTextRow"
+
+
 export default {
    name: 'AVTableSample',
 
    created() {
       this.avTableDef = this.$fakeTable,
-         this.avTableMData = createTableData(599);
+         this.avTableMData = createTableData(100);
    },
    components: {
       avTable,
@@ -224,14 +197,22 @@ export default {
       colWeek,
       colWorldclock,
       HighlightOnHover,
-      colEmail
+      colEmail,
+      avTextRow
 
    },
    data() {
       return {
          hoveredTable: false,
          avTableDef: [],
-         avTableMData: []
+         avTableMData: [],
+         isEditing : false,
+         editWrapper : "avTextRow",
+         editField : null,
+         editOptions : null,
+         editColumn : null,
+         editIndex : null,
+         oldValue : null
          //json for a defining a table
 
       }
@@ -255,6 +236,59 @@ export default {
       },
       focusedTCListener(tc) {
          console.log("focused tc", tc)
+      },
+      avActivateEditor(oldValue, fieldName, dataColumn, dataIndex, editComponent, editOptions) {
+         console.table(oldValue, fieldName, dataColumn, dataIndex, editComponent, editOptions)
+         let placeField = fieldName;
+         let editWrapper = editOptions.editorType || "avTextRow";
+
+         let compFieldData = {
+            tabIndex : 1,
+            component : null,
+            type : "text",
+            placeholder : null,
+            formID : fieldName,
+            value : oldValue || null,
+            label : {
+               labelFor : fieldName,
+               labelShown : editOptions.labelShown || false,
+               labelText : editOptions.labelText || null,
+               srOnly : editOptions.srOnly || false
+            },
+            pattern : null,
+            disabled : false,
+            readOnly : false,
+            spellCheck : false,
+            required : false,
+            helpText : editOptions.helpText || null,
+            errorClass : editOptions.errorClass || null,
+            validation : editOptions.validation || null
+         }
+
+      if(editWrapper === "avTextRow") { 
+         
+         this.editWrapper = "avTextRow"
+         console.log(editComponent)
+         switch(editComponent) {
+            case "col-peoples":
+    // code block
+    break;
+   case "col-longtext":
+      
+      compFieldData["component"] = "avText";
+    // code block
+    break;
+  default:
+    // code block
+}
+
+         this.editField = compFieldData;
+         this.editColumn = dataColumn;
+         this.editIndex = dataIndex;
+         return;
+         }
+
+         console.table(compFieldData)
       },
       avChangeData(newValue, dataIndex, objectField) {
          // console.log(newValue, dataIndex, objectField)

@@ -1,8 +1,7 @@
 <template>
 <div >
-   <p v-if="!isEditing" @click="editThis"> {{truncatedText ? truncatedText : cellValue}}</p>
-   <input v-else type="text" :value="cellValue" @input="updateValue($event)">
-   <button v-show="isEditing" @click.prevent="editValue">Save</button>
+   <p  @click="editValue"> {{truncatedText ? truncatedText : cellValue}}</p>
+   
 </div>
 </template>
 
@@ -54,14 +53,15 @@ export default {
       },
       editValue() {
          console.log("this")
+         let additionalEditOptions = false;
 
-         var r = confirm("Press a button!");
-         if (r == true) {
-            this.isEditing = !this.isEditing
-            this.$emit('saveDataChange', this.newValue)
-         } else {
-            this.isEditing = !this.isEditing
+         if(this.formatterParams.editOptions){
+            additionalEditOptions = {...this.formatterParams.editOptions}
+           return this.$emit('editCell', additionalEditOptions)
          }
+
+         return this.$emit('editCell', additionalEditOptions)
+         
       }
    },
    computed: {
