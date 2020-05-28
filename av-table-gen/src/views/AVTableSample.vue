@@ -268,7 +268,7 @@ export default {
          };
          const userOptions = Object.assign(defaultEditOptions, formatterParams);
 
-         console.log(userOptions)
+        
       
          let editWrapper = userOptions.editorType || "avTextRow";
          this.targFieldName = fieldName;
